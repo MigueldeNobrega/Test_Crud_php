@@ -119,12 +119,12 @@
 
    <script type="text/javascript">
     $(document).ready(function(){
-        var dataTable = $('$datos_usuario').DataTable({
+        var dataTable = $('#datos_usuario').DataTable({
             "processing":true,
             "serverSide":true,
             "order":[],
             "ajax":{
-                url:"obtener_registros.php",
+                url:"obtener_todos_registros.php",
                 type: "POST"
             },
             "columnsDefs":[{
