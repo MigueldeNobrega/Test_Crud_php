@@ -172,9 +172,61 @@
 						alert('Algunos campos son obligatorios');
 					}
         }
-
-
     });
+
+    // Funcionalidad de 'Editar' sobre elemento de la clase 'editar'
+			$(document).on('click', '.editar', function(){
+				const id_usuario = $(this).attr("id");
+				$.ajax({
+					url: "obtener_registro.php",
+					method: "POST",
+					data: {id_usuario:id_usuario},
+					dataType: "json",
+					// Cargamos los datos del usuario que se encontraban previamente en el Modal para Editarlo.
+					success: function(data){
+						$('#modalUsuario').modal('show'); // Hide: Off
+						$('#nombre').val(data.nombre);
+						$('#apellidos').val(data.apellidos);
+						$('#telefono').val(data.telefono);
+						$('#email').val(data.email);
+						$('.modal-title').text("Editar Usuario");
+						$('#id_usuario').val(id_usuario);
+						$('#imagen_subida').html(data.imagen_usuario);
+						$('#action').val("Editar");
+						$('#operacion').val("Editar");
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus, errorThrown);
+					}
+				});
+			});
+
+
+            // Funcionalidad de 'Borrar' sobre elemento de la clase 'borrar'
+			$(document).on('click', '.borrar', function(){
+				const id_usuario = $(this).attr("id");
+				if (confirm("¿Estás seguro de borrar el usuario con id: [" + id_usuario + "]?")) {
+					$.ajax({
+						url: "borrar.php",
+						method: "POST",
+						data: {id_usuario:id_usuario},
+						success: function(data){
+							alert(data);
+							// Recargar Tabla después de borrar el registro.
+							dataTable.ajax.reload();
+						},
+						error: function(jqXHR, textStatus, errorThrown){
+							console.log(textStatus, errorThrown);
+						}
+					});
+				}
+				else{
+					return false;
+				}
+			});
+
+
+
 
     });
 
