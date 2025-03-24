@@ -117,6 +117,25 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" integrity="sha256-/xUj+30JU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="></script>
 
-   
+   <script type="text/javascript">
+    $(document).ready(function(){
+        var dataTable = $('$datos_usuario').DataTable({
+            "processing":true,
+            "serverSide":true,
+            "order":[],
+            "ajax":{
+                url:"obtener_registros.php",
+                type: "POST"
+            },
+            "columnsDefs":[{
+                "targets": [0,3,4],
+                "orderable":false,
+            }
+            ]
+        });
+    });
+   </script>
+
+
   </body>
 </html>
