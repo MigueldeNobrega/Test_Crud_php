@@ -100,15 +100,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
  <!-- SCRIPTS -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
@@ -118,7 +109,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" integrity="sha256-/xUj+30JU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="></script>
 
    <script type="text/javascript">
+    
     $(document).ready(function(){
+
+        // Establecemos los valores que se almacenarán para '$_POST'
+			$("#botonCrear").click(function(){
+				$("#formulario")[0].reset();
+				$(".modal-title").text("Crear Usuario");
+				$("#action").val("Crear");
+				$("#operacion").val("Crear");
+				$("#imagen_subida").html("");
+			});
+
+
         var dataTable = $('#datos_usuario').DataTable({
             "processing":true,
             "serverSide":true,
@@ -133,9 +136,50 @@
             }
             ]
         });
+
+
+
+        $(document).on('submit', '#formulario', function(event){
+        event.preventDefault();
+        var nombres = $("#nombre").val();
+        var apellidos = $("#apellidos").val();
+        var telefono = $("#telefono").val();
+        var email = $("#email").val();
+        var extension = $("#imagen_usuario").val().split('.').pop().toLowerCase();
+
+        if(extension != ''){
+            if(jQuery.inArray(extension, ['gif','png','jpg'])== -1){
+                alert("Formato de imagen inválido");
+                $("#imagen_usuario").val('');
+                return false;
+            }
+            if (nombre != '' && apellidos != '' && email !='') {
+						$.ajax({
+							url: "crear.php",
+							method: "POST",
+							data: new FormData(this),
+							contentType: false,
+							processData: false,
+							success: function(data){
+								alert(data);
+								$('#formulario')[0].reset();
+								$('#modalUsuario').modal('hide');
+								dataTable.ajax.reload();
+							}
+						});
+					}
+					else{
+						alert('Algunos campos son obligatorios');
+					}
+        }
+
+
     });
-   </script>
+
+    });
+
+</script>
 
 
-  </body>
+</body>
 </html>
